@@ -1,24 +1,27 @@
 <?php
-class Conexion {
-    private $host = "localhost";
-    private $db = "soporte_tecnico";
-    private $user = "root";
-    private $pass = "";
-    private $charset = "utf8mb4";
+// ==========================================
+// CONFIGURACIÓN DE CONEXIÓN A BASE DE DATOS
+// ==========================================
 
-    public function conectar() {
-        try {
-            $conexion = new PDO(
-                "mysql:host={$this->host};dbname={$this->db};charset={$this->charset}",
-                $this->user,
-                $this->pass
-            );
+$host     = "localhost";
+$dbname   = "helpdesk";
+$user     = "root";
+$password = "";
 
-            $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $conexion;
-
-        } catch (PDOException $e) {
-            die("Error de conexión: " . $e->getMessage());
-        }
-    }
+try {
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$dbname;charset=utf8",
+        $user,
+        $password,
+        [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ]
+    );
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(["success" => false, "msg" => "Error de conexión: " . $e->getMessage()]);
+    exit;
 }
+?>
