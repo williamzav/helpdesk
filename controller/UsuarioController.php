@@ -258,6 +258,22 @@ switch ($action) {
         echo json_encode(['success' => true, 'data' => $user]);
         break;
 
+
+    // ── BUSCAR USUARIOS ───────────────────────────────────────
+    case 'buscar':
+        if (!isset($_SESSION['id_usuario'])) {
+            echo json_encode(['success' => false, 'msg' => 'Sin sesión']);
+            exit;
+        }
+        $buscar = trim($_POST['buscar'] ?? '');
+        if (empty($buscar)) {
+            echo json_encode(['success' => true, 'data' => []]);
+            exit;
+        }
+        $data = $model->buscar($buscar);
+        echo json_encode(['success' => true, 'data' => $data]);
+        break;
+
     // ── REGISTRO PÚBLICO ─────────────────────────────────────────
     case 'registro':
         $campos_req = ['nombre', 'paterno', 'correo', 'usuario', 'password'];

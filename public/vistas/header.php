@@ -16,7 +16,7 @@ $usuario = $_SESSION['usuario'] ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="../fontawesome/css/all.min.css">
-    
+    <link rel="stylesheet" href="../sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="../css/estilos.css">
     <title>Help-Desk</title>
 </head>
@@ -57,11 +57,7 @@ $usuario = $_SESSION['usuario'] ?? '';
                 <?php endif; ?>
 
                 <?php if ($rol === 'Admin' || $rol === 'Tecnico'): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="asignacion.php">
-                        <i class="fas fa-tasks me-1"></i>Asignación
-                    </a>
-                </li>
+               
                 <li class="nav-item">
                     <a class="nav-link" href="reportes.php">
                         <i class="fas fa-file-alt me-1"></i>Reportes

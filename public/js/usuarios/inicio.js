@@ -46,14 +46,12 @@ function renderTarjetas(rol) {
     const tarjetas = {
         Admin: [
             { icon: 'fas fa-users',       color: 'primary',   titulo: 'Usuarios',     link: 'usuarios.php',     desc: 'Gestionar usuarios del sistema' },
-            { icon: 'fas fa-tasks',        color: 'warning',   titulo: 'Asignación',   link: 'asignacion.php',   desc: 'Asignar técnicos a reportes' },
             { icon: 'fas fa-file-alt',     color: 'success',   titulo: 'Reportes',     link: 'reportes.php',     desc: 'Ver todos los reportes' },
             { icon: 'fas fa-file-invoice', color: 'info',      titulo: 'Mis Reportes', link: 'misreportes.php',  desc: 'Ver mis reportes generados' },
             { icon: 'fas fa-laptop',       color: 'secondary', titulo: 'Dispositivos', link: 'dispositivos.php', desc: 'Gestionar dispositivos' },
             { icon: 'fas fa-user-edit',    color: 'dark',      titulo: 'Editar Perfil',link: 'editar.php',       desc: 'Actualizar mis datos' },
         ],
         Tecnico: [
-            { icon: 'fas fa-tasks',        color: 'warning',   titulo: 'Asignación',   link: 'asignacion.php',   desc: 'Ver equipos asignados' },
             { icon: 'fas fa-file-alt',     color: 'success',   titulo: 'Reportes',     link: 'reportes.php',     desc: 'Gestionar reportes técnicos' },
             { icon: 'fas fa-laptop',       color: 'secondary', titulo: 'Dispositivos', link: 'dispositivos.php', desc: 'Gestionar dispositivos' },
             { icon: 'fas fa-user-edit',    color: 'dark',      titulo: 'Editar Perfil',link: 'editar.php',       desc: 'Actualizar mis datos' },

@@ -51,13 +51,12 @@ class DispositivoModel {
             INSERT INTO T_Dispositivos
                 (id_usuario, tipo, marca, modelo, color,
                  descripcion, memoria, disco_duro, procesador, imagen)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
         return $stmt->execute([
-            $data['id_usuario'], $data['tipo'],   $data['marca'],
-            $data['modelo'],     $data['color'],  $data['descripcion'],
-            $data['memoria'],    $data['disco_duro'], $data['procesador'],
-            $data['imagen']
+            $data['tipo'],    $data['marca'],    $data['modelo'],
+            $data['color'],   $data['descripcion'], $data['memoria'],
+            $data['disco_duro'], $data['procesador'], $data['imagen']
         ]);
     }
 
@@ -84,6 +83,43 @@ class DispositivoModel {
             DELETE FROM T_Dispositivos WHERE id_dispositivo = ?
         ");
         return $stmt->execute([$id]);
+    }
+
+
+    // ── Verificar si tiene usuario o reportes antes de eliminar ──
+    public function puedeEliminar($id) {
+        // Verificar usuario asignado
+        $stmt = $this->pdo->prepare("
+            SELECT id_usuario FROM T_Dispositivos 
+            WHERE id_dispositivo = ? AND id_usuario IS NOT NULL LIMIT 1
+        ");
+        $stmt->execute([$id]);
+        if ($stmt->fetch()) return ['puede' => false, 'msg' => 'El dispositivo tiene un usuario asignado. Quítalo antes de eliminar.'];
+
+        // Verificar reportes asociados
+        $stmt2 = $this->pdo->prepare("
+            SELECT id_reporte FROM T_Reportes 
+            WHERE id_dispositivo = ? LIMIT 1
+        ");
+        $stmt2->execute([$id]);
+        if ($stmt2->fetch()) return ['puede' => false, 'msg' => 'El dispositivo tiene reportes asociados y no puede eliminarse.'];
+
+        return ['puede' => true, 'msg' => ''];
+    }
+    // ── Asignar usuario ───────────────────────────────────────
+    public function asignarUsuario($id_dispositivo, $id_usuario) {
+        $stmt = $this->pdo->prepare("
+            UPDATE T_Dispositivos SET id_usuario = ? WHERE id_dispositivo = ?
+        ");
+        return $stmt->execute([$id_usuario, $id_dispositivo]);
+    }
+
+    // ── Quitar usuario ────────────────────────────────────────
+    public function quitarUsuario($id_dispositivo) {
+        $stmt = $this->pdo->prepare("
+            UPDATE T_Dispositivos SET id_usuario = NULL WHERE id_dispositivo = ?
+        ");
+        return $stmt->execute([$id_dispositivo]);
     }
 }
 ?>

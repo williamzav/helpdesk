@@ -135,5 +135,20 @@ class UsuarioModel {
         ");
         return $stmt->execute([$passwordHash, $id_usuario]);
     }
+
+    // ── Buscar usuarios por nombre o usuario ──────────────────
+    public function buscar($buscar) {
+        $like = "%$buscar%";
+        $stmt = $this->pdo->prepare("
+            SELECT id_usuario, nombre, paterno, materno, usuario, correo
+            FROM T_Usuario
+            WHERE (nombre LIKE ? OR paterno LIKE ? OR usuario LIKE ?)
+            AND estado = 1
+            ORDER BY nombre ASC
+            LIMIT 10
+        ");
+        $stmt->execute([$like, $like, $like]);
+        return $stmt->fetchAll();
+    }
 }
 ?>
