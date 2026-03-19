@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="public/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="public/css/menu.css">
-    <title>Document</title>
+    <title>HelpDesk</title>
 </head>
 <body>
-    <div class="wrapper fadeInDown">
+
+<div class="wrapper fadeInDown">
   <div id="formContent">
-    <!-- Tabs Titles -->
 
     <!-- Icon -->
     <div class="fadeIn first">
@@ -20,39 +20,159 @@
 
     <!-- Login Form -->
     <form id="frmLogin" action="#" method="POST" onsubmit="return loginUsuario()">
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="username" required>
-      <input type="text" id="password" class="fadeIn third" name="password" placeholder="password" required>
-      <input type="submit" class="fadeIn fourth" value="Entrar">
+      <input type="text"     id="login"    class="fadeIn second" name="login"    placeholder="Usuario"    required>
+      <input type="password" id="password" class="fadeIn third"  name="password" placeholder="Contraseña" required>
+      <input type="submit"                 class="fadeIn fourth"                 value="Entrar">
     </form>
 
-    <!-- Remind Passowrd -->
+    <!-- Links -->
     <div id="formFooter">
-      <a class="underlineHover" href="#" data-bs-toggle="modal" data-bs-target="#modalContacto">¿Olvidaste tu contraseña?</a>
+      <a class="underlineHover me-3" href="#" data-bs-toggle="modal" data-bs-target="#modalContacto">
+        ¿Olvidaste tu contraseña?
+      </a>
+      <a class="underlineHover" href="#" data-bs-toggle="modal" data-bs-target="#modalRegistro">
+        Registrarse
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── MODAL: RECUPERAR CONTRASEÑA ───────────────────────────── -->
+<div class="modal fade" id="modalContacto" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+
+      <div class="modal-header border-0 text-center">
+        <div class="w-100">
+          <h4 class="modal-title fw-bold">🔐 Recuperar contraseña</h4>
+          <small class="text-muted">Ingresa tus datos para continuar</small>
+        </div>
+        <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body px-4">
+        <form id="formRecuperar">
+          <div class="mb-3">
+            <label for="recover_usuario" class="form-label fw-semibold">👤 Usuario <span class="text-danger">*</span></label>
+            <input type="text" class="form-control rounded-3" id="recover_usuario" placeholder="Ingresa tu usuario" required>
+          </div>
+          <div class="mb-3">
+            <label for="recover_correo" class="form-label fw-semibold">📧 Correo electrónico <span class="text-danger">*</span></label>
+            <input type="email" class="form-control rounded-3" id="recover_correo" placeholder="Ingresa tu correo" required>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary w-50 rounded-3" id="btnRecuperar" onclick="return recuperarPassword()">Enviar</button>
+            <button type="button" class="btn btn-secondary w-50 rounded-3" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </form>
+      </div>
+
     </div>
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="modalContacto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- ── MODAL: REGISTRO ────────────────────────────────────────── -->
+<div class="modal fade" id="modalRegistro" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 shadow">
+
+      <div class="modal-header border-0 text-center">
+        <div class="w-100">
+          <h4 class="modal-title fw-bold">📝 Crear cuenta</h4>
+          <small class="text-muted">Completa tus datos para registrarte</small>
+        </div>
+        <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body">
-        ...
+
+      <div class="modal-body px-4">
+        <form id="formRegistro">
+          <div class="row">
+
+            <div class="col-md-4 mb-3">
+              <label for="reg_nombre" class="form-label fw-semibold">Nombre <span class="text-danger">*</span></label>
+              <input type="text" class="form-control rounded-3" id="reg_nombre" placeholder="Ingresa tu nombre" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="reg_paterno" class="form-label fw-semibold">Apellido Paterno <span class="text-danger">*</span></label>
+              <input type="text" class="form-control rounded-3" id="reg_paterno" placeholder="Apellido paterno" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="reg_materno" class="form-label fw-semibold">Apellido Materno</label>
+              <input type="text" class="form-control rounded-3" id="reg_materno" placeholder="Apellido materno">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="reg_fecha_nac" class="form-label fw-semibold">Fecha de nacimiento <span class="text-danger">*</span></label>
+              <input type="date" class="form-control rounded-3" id="reg_fecha_nac" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="reg_sexo" class="form-label fw-semibold">Sexo</label>
+              <input type="text" class="form-control rounded-3" id="reg_sexo" placeholder="Ej: Masculino, Femenino">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="reg_telefono" class="form-label fw-semibold">Teléfono</label>
+              <input type="text" class="form-control rounded-3" id="reg_telefono" placeholder="10 dígitos" maxlength="10">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="reg_correo" class="form-label fw-semibold">Correo electrónico <span class="text-danger">*</span></label>
+              <input type="email" class="form-control rounded-3" id="reg_correo" placeholder="usuario@correo.com" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="reg_usuario" class="form-label fw-semibold">Usuario <span class="text-danger">*</span></label>
+              <input type="text" class="form-control rounded-3" id="reg_usuario" placeholder="Nombre de usuario" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="reg_password" class="form-label fw-semibold">Contraseña <span class="text-danger">*</span></label>
+              <input type="password" class="form-control rounded-3" id="reg_password" placeholder="Mínimo 8 caracteres" required>
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label for="reg_ubicacion" class="form-label fw-semibold">Ubicación</label>
+              <input type="text" class="form-control rounded-3" id="reg_ubicacion" placeholder="Ciudad, dirección...">
+            </div>
+
+            <!-- Rol -->
+            <div class="col-md-6 mb-3">
+              <label for="reg_rol" class="form-label fw-semibold">Rol <span class="text-danger">*</span></label>
+              <select class="form-select rounded-3" id="reg_rol" onchange="verificarRol()">
+                <option value="Cliente" selected>Cliente</option>
+                <option value="Tecnico">Técnico</option>
+                <option value="Admin">Administrador</option>
+              </select>
+            </div>
+
+            <!-- Clave secreta (oculto por defecto) -->
+            <div class="col-md-6 mb-3" id="divClaveSecreta" style="display:none;">
+              <label for="reg_clave_secreta" class="form-label fw-semibold">🔑 Clave secreta del rol</label>
+              <input type="password" class="form-control rounded-3" id="reg_clave_secreta" placeholder="Ingresa la clave secreta">
+            </div>
+
+          </div>
+
+          <div class="d-flex gap-2 mb-2">
+            <button type="submit" class="btn btn-primary w-50 rounded-3" onclick="return registrarUsuario()">
+              Registrarse
+            </button>
+            <button type="button" class="btn btn-secondary w-50 rounded-3" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+          </div>
+
+        </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-     
-      </div>
+
     </div>
   </div>
 </div>
 
-    <script src="public/jquery/jquery.min.js"></script>
-    <script src="public/bootstrap/bootstrap.min.js"></script>
-    <script src="public/js/usuarios/login.js"></script>
+<!-- Scripts -->
+<script src="public/jquery/jquery-3.6.0.min.js"></script>
+<script src="public/bootstrap/bootstrap.min.js"></script>
+<script src="public/sweetalert2/sweetalert2@11.js"></script>
+<script src="public/js/usuarios/login.js"></script>
+
 </body>
 </html>
