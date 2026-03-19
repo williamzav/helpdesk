@@ -259,6 +259,53 @@ switch ($action) {
         break;
 
 
+
+    // ── OBTENER USUARIO POR ID ────────────────────────────────
+    case 'get_by_id':
+        if (!isset($_SESSION['id_usuario']) || $_SESSION['rol'] !== 'Admin') {
+            echo json_encode(['success' => false, 'msg' => 'Sin permisos']);
+            exit;
+        }
+        $id_buscar = $_POST['id_usuario'] ?? 0;
+        $user_data = $model->getById($id_buscar);
+        echo json_encode([
+            'success' => (bool)$user_data,
+            'data'    => $user_data
+        ]);
+        break;
+
+    // ── ELIMINAR USUARIO ──────────────────────────────────────
+    case 'eliminar':
+        if (!isset($_SESSION['id_usuario']) || $_SESSION['rol'] !== 'Admin') {
+            echo json_encode(['success' => false, 'msg' => 'Sin permisos']);
+            exit;
+        }
+        $id_eliminar = $_POST['id_usuario'] ?? 0;
+
+        // No puede eliminarse a sí mismo
+        if ($id_eliminar == $_SESSION['id_usuario']) {
+            echo json_encode(['success' => false, 'msg' => 'No puedes eliminarte a ti mismo']);
+            exit;
+        }
+
+        // Verificar si está activo
+        $stmtCheck = $pdo->prepare("SELECT estado FROM T_Usuario WHERE id_usuario = ? LIMIT 1");
+        $stmtCheck->execute([$id_eliminar]);
+        $userCheck = $stmtCheck->fetch();
+
+        if ($userCheck && $userCheck['estado'] == 1) {
+            echo json_encode(['success' => false, 'msg' => 'No puedes eliminar un usuario activo. Desactívalo primero.']);
+            exit;
+        }
+
+        $stmt = $pdo->prepare("DELETE FROM T_Usuario WHERE id_usuario = ?");
+        $ok   = $stmt->execute([$id_eliminar]);
+        echo json_encode([
+            'success' => $ok,
+            'msg'     => $ok ? 'Usuario eliminado correctamente' : 'Error al eliminar'
+        ]);
+        break;
+
     // ── BUSCAR USUARIOS ───────────────────────────────────────
     case 'buscar':
         if (!isset($_SESSION['id_usuario'])) {
